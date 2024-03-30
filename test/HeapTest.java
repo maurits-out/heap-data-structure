@@ -1,12 +1,10 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 import static java.util.Collections.sort;
 import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -158,8 +156,8 @@ public class HeapTest {
     }
 
     private <T extends Comparable<T>> void assertHeap(Heap<T> heap, List<T> expectedKeys) {
-        sort(expectedKeys);
-        expectedKeys.reversed()
+        expectedKeys.stream()
+                .sorted(reverseOrder())
                 .forEach(key -> assertThat(heap.extractMax()).isEqualTo(key));
         assertThat(heap.isEmpty()).isTrue();
     }
