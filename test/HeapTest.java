@@ -1,11 +1,14 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.function.IntSupplier;
+import java.util.stream.IntStream;
 
 import static java.util.Collections.sort;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.generate;
 import static java.util.stream.IntStream.range;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -163,8 +166,10 @@ public class HeapTest {
     }
 
     private List<Integer> generateRandomKeys() {
-        var keyCount = random.nextInt(1000) + 1;
-        return range(0, keyCount).boxed().map(r -> random.nextInt()).collect(toList());
+        return generate(this::aRandomInt)
+                .limit(random.nextInt(1000) + 1)
+                .boxed()
+                .collect(toList());
     }
 
     private int aRandomInt() {
